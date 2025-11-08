@@ -1,0 +1,758 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 头部样式 */
+.header {
+    text-align: center;
+    padding: 60px 20px;
+    color: white;
+}
+
+.header .title {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.header .subtitle {
+    font-size: 1.5rem;
+    opacity: 0.95;
+}
+
+.header-small {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.header-small h2 {
+    text-align: center;
+    color: #667eea;
+    margin: 0;
+}
+
+.back-btn {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.back-btn:hover {
+    background: #f0f0f0;
+}
+
+/* 主内容区 */
+.main-content {
+    background: white;
+    border-radius: 20px;
+    padding: 60px 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+/* 按钮样式 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 40px;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.btn-small {
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+.btn-large {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.3rem;
+}
+
+.btn-icon {
+    font-size: 2rem;
+}
+
+/* 介绍区域 */
+.intro {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 30px;
+    margin-top: 40px;
+}
+
+.intro h3 {
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.intro ul {
+    list-style: none;
+}
+
+.intro li {
+    padding: 10px 0;
+    font-size: 1.1rem;
+}
+
+/* 绘图页面 */
+.draw-page {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.draw-area {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+#drawCanvas {
+    border: 3px solid #667eea;
+    border-radius: 10px;
+    cursor: crosshair;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* 工具栏 */
+.toolbar {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.tool-section {
+    margin-bottom: 20px;
+}
+
+.tool-section:last-child {
+    margin-bottom: 0;
+}
+
+.tool-section label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+}
+
+.color-picker {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#colorPicker {
+    width: 60px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.preset-colors {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.color-btn {
+    width: 35px;
+    height: 35px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.color-btn:hover {
+    transform: scale(1.1);
+    border-color: #667eea;
+}
+
+#brushSize {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    outline: none;
+}
+
+.tool-btn {
+    padding: 12px 24px;
+    margin-right: 10px;
+    border: 2px solid #667eea;
+    background: white;
+    color: #667eea;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.tool-btn:hover {
+    background: #667eea;
+    color: white;
+}
+
+.tool-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+.clear-btn {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.clear-btn:hover {
+    background: #dc3545;
+    color: white;
+}
+
+/* 提交区域 */
+.submit-area {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 25px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+}
+
+.input-group input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.input-group input[type="text"]:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.char-count {
+    position: absolute;
+    right: 10px;
+    top: 45px;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.tip {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+/* 围栏页面 */
+.pen-stats {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* 搜索栏 */
+.search-bar {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-container input[type="text"] {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.search-container input[type="text"]:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.search-result {
+    margin-top: 15px;
+    color: #666;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.search-result.highlight {
+    color: #667eea;
+    font-weight: 600;
+}
+
+.total-count {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.total-count span {
+    color: #667eea;
+    font-size: 1.5rem;
+}
+
+.pen-page {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    min-height: 500px;
+}
+
+.pig-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.pig-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 15px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.pig-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    border-color: #667eea;
+}
+
+.pig-thumbnail {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: contain;
+    background: #f8f9fa;
+    margin-bottom: 12px;
+}
+
+.pig-info {
+    text-align: center;
+}
+
+.pig-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    word-break: break-word;
+}
+
+.pig-location {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.pig-time {
+    color: #999;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+}
+
+.pig-likes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.like-btn {
+    background: #fff;
+    border: 2px solid #ff6b9d;
+    color: #ff6b9d;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.like-btn:hover {
+    background: #ff6b9d;
+    color: white;
+    transform: scale(1.05);
+}
+
+.like-btn.liked {
+    background: #ff6b9d;
+    color: white;
+}
+
+.heart {
+    font-size: 1.2rem;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 1.2rem;
+}
+
+/* 弹窗样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    animation: modalSlideIn 0.3s ease;
+}
+
+.modal-large {
+    max-width: 800px;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content h3 {
+    color: #667eea;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.modal-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #666;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #999;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.close-btn:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+/* 详情页样式 */
+.pig-detail {
+    display: flex;
+    gap: 30px;
+    text-align: left;
+}
+
+.pig-detail-image {
+    flex: 1;
+}
+
+.pig-detail-image img {
+    width: 100%;
+    border-radius: 15px;
+    border: 3px solid #667eea;
+}
+
+.pig-detail-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pig-detail-info h3 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.detail-location,
+.detail-time {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.detail-likes {
+    margin-top: auto;
+}
+
+.detail-likes .like-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 15px;
+    font-size: 1.3rem;
+}
+
+/* 页脚 */
+.footer {
+    text-align: center;
+    padding: 30px;
+    color: white;
+    opacity: 0.8;
+}
+
+/* 响应式设计 - 移动端 */
+@media (max-width: 768px) {
+    .header .title {
+        font-size: 2.5rem;
+    }
+
+    .header .subtitle {
+        font-size: 1.1rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 15px 30px;
+    }
+
+    #drawCanvas {
+        width: 100%;
+        height: auto;
+        max-width: 500px;
+    }
+
+    .toolbar {
+        padding: 15px;
+    }
+
+    .preset-colors {
+        justify-content: center;
+    }
+
+    .tool-btn {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .pig-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .pig-thumbnail {
+        height: 150px;
+    }
+
+    .pig-name {
+        font-size: 1rem;
+    }
+
+    .pen-stats {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .search-container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .search-container input[type="text"] {
+        width: 100%;
+    }
+
+    .search-container button {
+        width: 100%;
+    }
+
+    .pig-detail {
+        flex-direction: column;
+    }
+
+    .modal-content {
+        padding: 25px;
+        width: 95%;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+    }
+
+    .header-small {
+        padding: 15px 20px;
+        min-height: 60px;
+    }
+
+    .header-small h2 {
+        font-size: 1.3rem;
+        padding: 0 70px;
+    }
+
+    .back-btn {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    .header {
+        padding: 40px 10px;
+    }
+
+    .main-content {
+        padding: 30px 20px;
+    }
+
+    .intro li {
+        font-size: 1rem;
+    }
+}
+

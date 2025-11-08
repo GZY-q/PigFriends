@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画一只猪 - 猪朋友</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header-small">
+            <a href="/" class="back-btn">← 返回首页</a>
+            <h2>画一只猪 🎨</h2>
+        </header>
+
+        <main class="draw-page">
+            <!-- 绘图区域 -->
+            <div class="draw-area">
+                <canvas id="drawCanvas" width="500" height="500"></canvas>
+            </div>
+
+            <!-- 工具栏 -->
+            <div class="toolbar">
+                <div class="tool-section">
+                    <label>画笔颜色：</label>
+                    <div class="color-picker">
+                        <input type="color" id="colorPicker" value="#000000">
+                        <div class="preset-colors">
+                            <button class="color-btn" data-color="#000000" style="background: #000000"></button>
+                            <button class="color-btn" data-color="#FF1493" style="background: #FF1493"></button>
+                            <button class="color-btn" data-color="#FF69B4" style="background: #FF69B4"></button>
+                            <button class="color-btn" data-color="#FF6347" style="background: #FF6347"></button>
+                            <button class="color-btn" data-color="#FFA500" style="background: #FFA500"></button>
+                            <button class="color-btn" data-color="#FFD700" style="background: #FFD700"></button>
+                            <button class="color-btn" data-color="#32CD32" style="background: #32CD32"></button>
+                            <button class="color-btn" data-color="#1E90FF" style="background: #1E90FF"></button>
+                            <button class="color-btn" data-color="#8B4513" style="background: #8B4513"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <label for="brushSize">画笔粗细：<span id="brushSizeValue">5</span>px</label>
+                    <input type="range" id="brushSize" min="1" max="50" value="5">
+                </div>
+
+                <div class="tool-section">
+                    <button id="eraserBtn" class="tool-btn">🧹 橡皮擦</button>
+                    <button id="clearBtn" class="tool-btn clear-btn">🗑️ 清空画布</button>
+                </div>
+            </div>
+
+            <!-- 提交区域 -->
+            <div class="submit-area">
+                <div class="input-group">
+                    <label for="pigName">给你的猪起个名字：</label>
+                    <input type="text" id="pigName" maxlength="20" placeholder="最多20个字" required>
+                    <span class="char-count"><span id="charCount">0</span>/20</span>
+                </div>
+                <button id="submitBtn" class="btn btn-primary btn-large">🐷 提交到围栏</button>
+                <p class="tip">提示：完成绘画后必须输入名字才能提交哦！</p>
+            </div>
+        </main>
+
+        <!-- 成功提示弹窗 -->
+        <div id="successModal" class="modal">
+            <div class="modal-content">
+                <h3>🎉 恭喜！</h3>
+                <p id="successMessage"></p>
+                <div class="modal-buttons">
+                    <a href="/" class="btn btn-secondary">返回首页</a>
+                    <a href="/pen.html" class="btn btn-primary">去围栏看看</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 错误提示弹窗 -->
+        <div id="errorModal" class="modal">
+            <div class="modal-content">
+                <h3>⚠️ 提示</h3>
+                <p id="errorMessage"></p>
+                <button class="btn btn-primary" onclick="closeErrorModal()">知道了</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/draw.js"></script>
+</body>
+</html>
+

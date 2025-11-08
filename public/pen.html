@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全球围栏 - 猪朋友</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header-small">
+            <a href="/" class="back-btn">← 返回首页</a>
+            <h2>全球围栏 🏡</h2>
+        </header>
+
+        <div class="pen-stats">
+            <p class="total-count">全球共有 <span id="totalPigs">0</span> 只猪</p>
+            <a href="/draw.html" class="btn btn-primary btn-small">+ 画一只新猪</a>
+        </div>
+
+        <!-- 搜索栏 -->
+        <div class="search-bar">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="🔍 搜索猪的名字..." maxlength="20">
+                <button id="searchBtn" class="btn btn-primary btn-small">搜索</button>
+                <button id="clearSearchBtn" class="btn btn-secondary btn-small" style="display: none;">清除</button>
+            </div>
+            <p id="searchResult" class="search-result"></p>
+        </div>
+
+        <main class="pen-page">
+            <div id="pigGrid" class="pig-grid">
+                <div class="loading">加载中...</div>
+            </div>
+        </main>
+
+        <!-- 详情弹窗 -->
+        <div id="detailModal" class="modal">
+            <div class="modal-content modal-large">
+                <button class="close-btn" onclick="closeDetailModal()">×</button>
+                <div class="pig-detail">
+                    <div class="pig-detail-image">
+                        <img id="detailImage" src="" alt="猪的画像">
+                    </div>
+                    <div class="pig-detail-info">
+                        <h3 id="detailName"></h3>
+                        <p class="detail-location">📍 <span id="detailLocation"></span></p>
+                        <p class="detail-time">🕐 <span id="detailTime"></span></p>
+                        <div class="detail-likes">
+                            <button id="detailLikeBtn" class="like-btn">
+                                <span class="heart">❤️</span>
+                                <span id="detailLikes">0</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/pen.js"></script>
+</body>
+</html>
+
