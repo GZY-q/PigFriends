@@ -38,6 +38,20 @@ db.exec(`
 db.exec(`
   CREATE INDEX IF NOT EXISTS idx_created_at ON pigs(created_at DESC);
   CREATE INDEX IF NOT EXISTS idx_submissions_ip ON submissions(ip, timestamp);
+  CREATE TABLE IF NOT EXISTS comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    pig_id INTEGER NOT NULL,
+    content TEXT NOT NULL,
+    ip TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    FOREIGN KEY (pig_id) REFERENCES pigs(id)
+  );
+  CREATE INDEX IF NOT EXISTS idx_comments_pig ON comments(pig_id, created_at DESC);
+  CREATE TABLE IF NOT EXISTS comment_submissions (
+    ip TEXT NOT NULL,
+    timestamp INTEGER NOT NULL
+  );
+  CREATE INDEX IF NOT EXISTS idx_comment_submissions_ip ON comment_submissions(ip, timestamp);
 `);
 
 // 获取客户端IP
@@ -88,35 +102,13 @@ function getLocation(ip) {
             'VN': '越南',
             'PH': '菲律宾'
         };
-        
         const countryName = countryMap[geo.country] || geo.country;
-        // geo.region 通常为省/州代码，geo.city 为城市名（取决于 MaxMind 数据覆盖）
-        const region = geo.region || '';
-        const city = geo.city || '';
-        
-        // 常见中国省级代码到中文名（geoip-lite 可能返回简码或代码，按常见简码覆盖）
-        const cnRegionMap = {
-            'BJ': '北京', 'SH': '上海', 'TJ': '天津', 'CQ': '重庆',
-            'HE': '河北', 'SX': '山西', 'NM': '内蒙古', 'LN': '辽宁',
-            'JL': '吉林', 'HL': '黑龙江', 'JS': '江苏', 'ZJ': '浙江',
-            'AH': '安徽', 'FJ': '福建', 'JX': '江西', 'SD': '山东',
-            'HA': '河南', 'HB': '湖北', 'HN': '湖南', 'GD': '广东',
-            'GX': '广西', 'HI': '海南', 'SC': '四川', 'GZ': '贵州',
-            'YN': '云南', 'XZ': '西藏', 'SN': '陕西', 'GS': '甘肃',
-            'QH': '青海', 'NX': '宁夏', 'XJ': '新疆', 'TW': '中国台湾',
-            'HK': '中国香港', 'MO': '中国澳门'
-        };
-        
-        let regionName = region;
-        if (geo.country === 'CN' && region) {
-            regionName = cnRegionMap[region] || region;
+        // 优先使用城市；没有城市则回退到国家名
+        // geoip-lite 可能返回 city，如 "Beijing"/"Shanghai" 等（英文），此处直接使用以避免不准确的本地化
+        if (geo.city && typeof geo.city === 'string' && geo.city.trim()) {
+            return geo.city.trim();
         }
-        
-        const parts = [countryName];
-        if (regionName) parts.push(regionName);
-        if (city) parts.push(city);
-        
-        return parts.join(' ');
+        return countryName;
     }
     return '未知地区';
 }
@@ -142,27 +134,22 @@ function recordSubmission(ip) {
     stmt.run(ip, Date.now());
 }
 
-// 管理员校验中间件
-function requireAdmin(req, res, next) {
-    // 支持多种来源：自定义头、Authorization Bearer、查询参数、简易 Cookie
-    let token = req.headers['x-admin-token'] || req.query.admin_token;
-    if (!token && req.headers['authorization']) {
-        const auth = String(req.headers['authorization']);
-        const m = auth.match(/^Bearer\s+(.+)$/i);
-        if (m) token = m[1];
-    }
-    if (!token && req.headers['cookie']) {
-        const cookieStr = String(req.headers['cookie']);
-        const m = cookieStr.split(';').map(s => s.trim()).find(s => s.startsWith('x-admin-token='));
-        if (m) token = decodeURIComponent(m.split('=').slice(1).join('=') || '');
-    }
-    if (!process.env.ADMIN_TOKEN) {
-        return res.status(503).json({ error: '未配置管理密钥（ADMIN_TOKEN）' });
-    }
-    if (!token || token !== process.env.ADMIN_TOKEN) {
-        return res.status(401).json({ error: '未授权' });
-    }
-    next();
+// 检查评论提交频率（防刷）
+function checkCommentLimit(ip) {
+    const tenMinutesAgo = Date.now() - 10 * 60 * 1000;
+    // 清理旧记录
+    const cleanStmt = db.prepare('DELETE FROM comment_submissions WHERE timestamp < ?');
+    cleanStmt.run(tenMinutesAgo);
+    // 检查最近10分钟的提交次数（最多5条）
+    const countStmt = db.prepare('SELECT COUNT(*) as count FROM comment_submissions WHERE ip = ? AND timestamp > ?');
+    const result = countStmt.get(ip, tenMinutesAgo);
+    return result.count < 5;
+}
+
+// 记录评论提交
+function recordCommentSubmission(ip) {
+    const stmt = db.prepare('INSERT INTO comment_submissions (ip, timestamp) VALUES (?, ?)');
+    stmt.run(ip, Date.now());
 }
 
 // API路由
@@ -358,29 +345,79 @@ app.get('/api/stats', (req, res) => {
     }
 });
 
-// 6. 删除猪（后台）
-app.delete('/api/pigs/:id', requireAdmin, (req, res) => {
+// 6. 获取某只猪的评论（分页）
+app.get('/api/pigs/:id/comments', (req, res) => {
     try {
         const pigId = parseInt(req.params.id);
-        
         if (!pigId) {
             return res.status(400).json({ error: '无效的ID' });
         }
-        
-        const exists = db.prepare('SELECT id FROM pigs WHERE id = ?').get(pigId);
+        const page = parseInt(req.query.page) || 0;
+        const limit = parseInt(req.query.limit) || 20;
+        const offset = page * limit;
+        const countStmt = db.prepare('SELECT COUNT(*) as total FROM comments WHERE pig_id = ?');
+        const { total } = countStmt.get(pigId);
+        const stmt = db.prepare(`
+            SELECT id, content, created_at 
+            FROM comments 
+            WHERE pig_id = ? 
+            ORDER BY created_at DESC 
+            LIMIT ? OFFSET ?
+        `);
+        const comments = stmt.all(pigId, limit, offset);
+        res.json({
+            success: true,
+            total,
+            page,
+            comments
+        });
+    } catch (error) {
+        console.error('获取评论错误:', error);
+        res.status(500).json({ error: '服务器错误' });
+    }
+});
+
+// 7. 为某只猪新增评论
+app.post('/api/pigs/:id/comments', (req, res) => {
+    try {
+        const pigId = parseInt(req.params.id);
+        if (!pigId) {
+            return res.status(400).json({ error: '无效的ID' });
+        }
+        const { content } = req.body || {};
+        if (!content || typeof content !== 'string' || !content.trim()) {
+            return res.status(400).json({ error: '评论内容不能为空' });
+        }
+        const trimmed = content.trim();
+        if (trimmed.length > 200) {
+            return res.status(400).json({ error: '评论最多200字' });
+        }
+        // 检查目标猪是否存在
+        const existsStmt = db.prepare('SELECT id FROM pigs WHERE id = ?');
+        const exists = existsStmt.get(pigId);
         if (!exists) {
             return res.status(404).json({ error: '猪不存在' });
         }
-        
-        db.prepare('DELETE FROM pigs WHERE id = ?').run(pigId);
-        
+        const ip = getClientIP(req);
+        if (!checkCommentLimit(ip)) {
+            return res.status(429).json({ error: '评论太频繁啦，请稍后再试（每10分钟最多5条）' });
+        }
+        const timestamp = Date.now();
+        const insertStmt = db.prepare(`
+            INSERT INTO comments (pig_id, content, ip, created_at)
+            VALUES (?, ?, ?, ?)
+        `);
+        const result = insertStmt.run(pigId, trimmed, ip, timestamp);
+        recordCommentSubmission(ip);
         res.json({
             success: true,
-            message: '删除成功'
+            id: result.lastInsertRowid,
+            message: '评论成功！',
+            comment: { id: result.lastInsertRowid, content: trimmed, created_at: timestamp }
         });
     } catch (error) {
-        console.error('删除错误:', error);
-        res.status(500).json({ error: '服务器错误' });
+        console.error('新增评论错误:', error);
+        res.status(500).json({ error: '服务器错误，请稍后重试' });
     }
 });
 

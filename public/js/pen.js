@@ -138,6 +138,23 @@ function showDetail(pig) {
         likePig(pig.id, detailLikeBtn);
     };
     
+    // 绑定评论输入计数
+    const commentInput = document.getElementById('commentInput');
+    const commentCount = document.getElementById('commentCount');
+    if (commentInput && commentCount) {
+        commentCount.textContent = `${commentInput.value.length}/200`;
+        commentInput.oninput = () => {
+            commentCount.textContent = `${commentInput.value.length}/200`;
+        };
+    }
+    // 加载评论
+    loadComments(pig.id, 0);
+    // 绑定提交按钮
+    const commentSubmit = document.getElementById('commentSubmit');
+    if (commentSubmit) {
+        commentSubmit.onclick = () => submitComment(pig.id);
+    }
+    
     modal.classList.add('show');
 }
 
@@ -145,6 +162,85 @@ function showDetail(pig) {
 function closeDetailModal() {
     const modal = document.getElementById('detailModal');
     modal.classList.remove('show');
+}
+
+// 加载评论列表
+async function loadComments(pigId, page = 0) {
+    const list = document.getElementById('commentsList');
+    if (!list) return;
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    try {
+        const response = await fetch(`/api/pigs/${pigId}/comments?page=${page}&limit=20`);
+        const data = await response.json();
+        if (!response.ok) {
+            list.innerHTML = '<div class="loading">加载失败，请稍后重试</div>';
+            return;
+        }
+        if (!data.comments || data.comments.length === 0) {
+            list.innerHTML = '<div class="loading">还没有评论，快来抢沙发！</div>';
+            return;
+        }
+        list.innerHTML = '';
+        data.comments.forEach(c => {
+            const item = document.createElement('div');
+            item.className = 'comment-item';
+            const content = document.createElement('div');
+            content.className = 'comment-content';
+            content.textContent = c.content;
+            const time = document.createElement('div');
+            time.className = 'comment-time';
+            time.textContent = formatTime(c.created_at);
+            item.appendChild(content);
+            item.appendChild(time);
+            list.appendChild(item);
+        });
+    } catch (e) {
+        console.error('加载评论失败:', e);
+        list.innerHTML = '<div class="loading">加载失败，请稍后重试</div>';
+    }
+}
+
+// 提交评论
+async function submitComment(pigId) {
+    const input = document.getElementById('commentInput');
+    const btn = document.getElementById('commentSubmit');
+    if (!input || !btn) return;
+    const text = (input.value || '').trim();
+    if (!text) {
+        alert('评论内容不能为空');
+        return;
+    }
+    if (text.length > 200) {
+        alert('评论最多200字');
+        return;
+    }
+    btn.disabled = true;
+    btn.textContent = '发表中...';
+    try {
+        const response = await fetch(`/api/pigs/${pigId}/comments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: text })
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            alert(data.error || '发表评论失败，请稍后重试');
+            btn.disabled = false;
+            btn.textContent = '发表';
+            return;
+        }
+        // 清空输入，刷新列表
+        input.value = '';
+        const count = document.getElementById('commentCount');
+        if (count) count.textContent = '0/200';
+        await loadComments(pigId, 0);
+    } catch (e) {
+        console.error('发表评论失败:', e);
+        alert('网络错误，请稍后重试');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = '发表';
+    }
 }
 
 // 点赞功能

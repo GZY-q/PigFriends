@@ -629,6 +629,87 @@ body {
     font-size: 1.3rem;
 }
 
+/* 评论区 */
+.comments {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 16px;
+    border: 2px solid #eaeaea;
+}
+
+.comments h4 {
+    margin-bottom: 12px;
+    color: #667eea;
+    font-size: 1.2rem;
+}
+
+.comments-list {
+    max-height: 260px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-right: 6px;
+}
+
+.comment-item {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 10px 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.comment-content {
+    color: #333;
+    font-size: 0.98rem;
+    word-break: break-word;
+    margin-bottom: 6px;
+}
+
+.comment-time {
+    color: #999;
+    font-size: 0.85rem;
+    text-align: right;
+}
+
+.comment-input {
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.comment-input textarea {
+    width: 100%;
+    border: 2px solid #e9e9ff;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.98rem;
+    resize: vertical;
+    min-height: 64px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.comment-input textarea:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+.comment-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+#commentCount {
+    color: #999;
+    font-size: 0.9rem;
+}
+
 /* 页脚 */
 .footer {
     text-align: center;
