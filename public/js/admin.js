@@ -136,9 +136,14 @@
         }
         if (!confirm(`确定删除 #${id} 吗？不可恢复`)) return;
         try {
-            const res = await fetch(`/api/pigs/${id}`, {
+            // 同时通过 Header 与 Query 传递凭证，兼容可能丢弃自定义头的代理
+            const url = `/api/pigs/${id}?admin_token=${encodeURIComponent(token)}`;
+            const res = await fetch(url, {
                 method: 'DELETE',
-                headers: { 'x-admin-token': token }
+                headers: {
+                    'x-admin-token': token,
+                    'Authorization': `Bearer ${token}`
+                }
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok) {
