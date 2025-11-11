@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猪朋友 · 后台管理</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .admin-container { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+        .admin-card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 16px; margin-bottom: 16px; }
+        .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        .row > * { flex: none; }
+        .token-input { width: 260px; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
+        .btn { padding: 8px 12px; border: none; background: #ff6b6b; color: #fff; border-radius: 6px; cursor: pointer; }
+        .btn.secondary { background: #4c6ef5; }
+        .btn.gray { background: #868e96; }
+        .btn:disabled { opacity: .6; cursor: not-allowed; }
+        .list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+        .item { background: #fff; border: 1px solid #eee; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+        .thumb { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #f8f9fa; }
+        .meta { padding: 10px; font-size: 12px; color: #495057; display: flex; flex-direction: column; gap: 6px; }
+        .name { font-weight: 600; color: #212529; }
+        .actions { padding: 10px; display: flex; gap: 8px; }
+        .pagination { display: flex; gap: 8px; align-items: center; }
+        .search { flex: 1; min-width: 180px; }
+        .search input { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
+        .topbar { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+        .stat { color: #555; font-size: 13px; }
+        .danger { color: #d6336c; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-card">
+            <div class="row">
+                <input id="token" class="token-input" type="password" placeholder="输入管理密钥">
+                <button id="saveToken" class="btn secondary">保存密钥</button>
+                <button id="clearToken" class="btn gray">清除密钥</button>
+                <span id="tokenStatus" class="stat"></span>
+            </div>
+        </div>
+
+        <div class="admin-card">
+            <div class="topbar">
+                <div class="search">
+                    <input id="searchInput" type="text" placeholder="按名称搜索">
+                </div>
+                <div class="pagination">
+                    <button id="prevBtn" class="btn gray">上一页</button>
+                    <span id="pageInfo" class="stat">第 1 页</span>
+                    <button id="nextBtn" class="btn gray">下一页</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-card">
+            <div id="stats" class="stat">加载中...</div>
+        </div>
+
+        <div class="admin-card">
+            <div id="list" class="list"></div>
+        </div>
+    </div>
+
+    <script src="/js/admin.js"></script>
+    <script>
+        // 初始化 token 输入框
+        (function initToken() {
+            const saved = localStorage.getItem('ADMIN_TOKEN') || '';
+            const el = document.getElementById('token');
+            el.value = saved;
+        })();
+    </script>
+</body>
+<!-- 简单的后台页面，仅用于内部管理 -->
+</html>
+
+

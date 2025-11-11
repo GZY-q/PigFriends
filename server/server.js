@@ -88,7 +88,35 @@ function getLocation(ip) {
             'VN': '越南',
             'PH': '菲律宾'
         };
-        return countryMap[geo.country] || geo.country;
+        
+        const countryName = countryMap[geo.country] || geo.country;
+        // geo.region 通常为省/州代码，geo.city 为城市名（取决于 MaxMind 数据覆盖）
+        const region = geo.region || '';
+        const city = geo.city || '';
+        
+        // 常见中国省级代码到中文名（geoip-lite 可能返回简码或代码，按常见简码覆盖）
+        const cnRegionMap = {
+            'BJ': '北京', 'SH': '上海', 'TJ': '天津', 'CQ': '重庆',
+            'HE': '河北', 'SX': '山西', 'NM': '内蒙古', 'LN': '辽宁',
+            'JL': '吉林', 'HL': '黑龙江', 'JS': '江苏', 'ZJ': '浙江',
+            'AH': '安徽', 'FJ': '福建', 'JX': '江西', 'SD': '山东',
+            'HA': '河南', 'HB': '湖北', 'HN': '湖南', 'GD': '广东',
+            'GX': '广西', 'HI': '海南', 'SC': '四川', 'GZ': '贵州',
+            'YN': '云南', 'XZ': '西藏', 'SN': '陕西', 'GS': '甘肃',
+            'QH': '青海', 'NX': '宁夏', 'XJ': '新疆', 'TW': '中国台湾',
+            'HK': '中国香港', 'MO': '中国澳门'
+        };
+        
+        let regionName = region;
+        if (geo.country === 'CN' && region) {
+            regionName = cnRegionMap[region] || region;
+        }
+        
+        const parts = [countryName];
+        if (regionName) parts.push(regionName);
+        if (city) parts.push(city);
+        
+        return parts.join(' ');
     }
     return '未知地区';
 }
@@ -112,6 +140,18 @@ function checkSubmissionLimit(ip) {
 function recordSubmission(ip) {
     const stmt = db.prepare('INSERT INTO submissions (ip, timestamp) VALUES (?, ?)');
     stmt.run(ip, Date.now());
+}
+
+// 管理员校验中间件
+function requireAdmin(req, res, next) {
+    const token = req.headers['x-admin-token'] || req.query.admin_token;
+    if (!process.env.ADMIN_TOKEN) {
+        return res.status(503).json({ error: '未配置管理密钥（ADMIN_TOKEN）' });
+    }
+    if (!token || token !== process.env.ADMIN_TOKEN) {
+        return res.status(401).json({ error: '未授权' });
+    }
+    next();
 }
 
 // API路由
@@ -303,6 +343,32 @@ app.get('/api/stats', (req, res) => {
         
     } catch (error) {
         console.error('获取统计错误:', error);
+        res.status(500).json({ error: '服务器错误' });
+    }
+});
+
+// 6. 删除猪（后台）
+app.delete('/api/pigs/:id', requireAdmin, (req, res) => {
+    try {
+        const pigId = parseInt(req.params.id);
+        
+        if (!pigId) {
+            return res.status(400).json({ error: '无效的ID' });
+        }
+        
+        const exists = db.prepare('SELECT id FROM pigs WHERE id = ?').get(pigId);
+        if (!exists) {
+            return res.status(404).json({ error: '猪不存在' });
+        }
+        
+        db.prepare('DELETE FROM pigs WHERE id = ?').run(pigId);
+        
+        res.json({
+            success: true,
+            message: '删除成功'
+        });
+    } catch (error) {
+        console.error('删除错误:', error);
         res.status(500).json({ error: '服务器错误' });
     }
 });
