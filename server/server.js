@@ -144,7 +144,18 @@ function recordSubmission(ip) {
 
 // 管理员校验中间件
 function requireAdmin(req, res, next) {
-    const token = req.headers['x-admin-token'] || req.query.admin_token;
+    // 支持多种来源：自定义头、Authorization Bearer、查询参数、简易 Cookie
+    let token = req.headers['x-admin-token'] || req.query.admin_token;
+    if (!token && req.headers['authorization']) {
+        const auth = String(req.headers['authorization']);
+        const m = auth.match(/^Bearer\s+(.+)$/i);
+        if (m) token = m[1];
+    }
+    if (!token && req.headers['cookie']) {
+        const cookieStr = String(req.headers['cookie']);
+        const m = cookieStr.split(';').map(s => s.trim()).find(s => s.startsWith('x-admin-token='));
+        if (m) token = decodeURIComponent(m.split('=').slice(1).join('=') || '');
+    }
     if (!process.env.ADMIN_TOKEN) {
         return res.status(503).json({ error: '未配置管理密钥（ADMIN_TOKEN）' });
     }
