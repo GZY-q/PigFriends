@@ -524,6 +524,8 @@ body {
     text-align: center;
     position: relative;
     animation: modalSlideIn 0.3s ease;
+    max-height: 90vh; /* 防止移动端弹窗超出屏幕高度 */
+    overflow-y: auto; /* 内容可滚动 */
 }
 
 .modal-large {
@@ -666,6 +668,7 @@ body {
     font-size: 0.98rem;
     word-break: break-word;
     margin-bottom: 6px;
+    overflow-wrap: anywhere; /* 处理超长连续字符/链接在移动端溢出 */
 }
 
 .comment-time {
@@ -797,6 +800,7 @@ body {
     .modal-content {
         padding: 25px;
         width: 95%;
+        max-height: 92vh; /* 更紧凑的安全高度 */
     }
 
     .modal-buttons {
@@ -816,6 +820,15 @@ body {
     .back-btn {
         font-size: 0.9rem;
         padding: 6px 12px;
+    }
+
+    /* 移动端评论区优化：限制高度并可滚动，避免撑出屏幕 */
+    .comments-list {
+        max-height: 40vh;
+    }
+
+    .comment-input textarea {
+        min-height: 56px;
     }
 }
 
