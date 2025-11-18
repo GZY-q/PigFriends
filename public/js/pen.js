@@ -5,7 +5,7 @@ const PAGE_SIZE = 20;
 let loading = false;
 let hasMore = true;
 let currentSearch = ''; // 当前搜索关键字
-let currentSort = 'created_at'; // 当前排序方式：created_at/likes/comments
+let currentSort = 'likes'; // 当前排序方式：created_at/likes/comments（默认点赞最多）
 
 // 页面加载时获取猪列表
 document.addEventListener('DOMContentLoaded', () => {
