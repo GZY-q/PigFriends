@@ -5,9 +5,11 @@ const PAGE_SIZE = 20;
 let loading = false;
 let hasMore = true;
 let currentSearch = ''; // 当前搜索关键字
+let currentSort = 'created_at'; // 当前排序方式：created_at/likes/comments
 
 // 页面加载时获取猪列表
 document.addEventListener('DOMContentLoaded', () => {
+    setupSort();
     loadPigs();
     setupInfiniteScroll();
     setupSearch();
@@ -25,6 +27,9 @@ async function loadPigs() {
         let url = `/api/pigs?page=${currentPage}&limit=${PAGE_SIZE}`;
         if (currentSearch) {
             url += `&search=${encodeURIComponent(currentSearch)}`;
+        }
+        if (currentSort) {
+            url += `&sort=${encodeURIComponent(currentSort)}`;
         }
         
         const response = await fetch(url);
@@ -403,5 +408,18 @@ function updateSearchResult(total, searchKeyword) {
         searchResult.textContent = '';
         clearSearchBtn.style.display = 'none';
     }
+}
+
+// 设置排序功能
+function setupSort() {
+    const sortSelect = document.getElementById('sortSelect');
+    if (!sortSelect) return;
+    // 默认值
+    sortSelect.value = currentSort;
+    // 监听变化
+    sortSelect.addEventListener('change', () => {
+        currentSort = sortSelect.value;
+        resetPigList();
+    });
 }
 

@@ -390,6 +390,40 @@ body {
     font-size: 1.5rem;
 }
 
+/* 排序栏 */
+.sort-bar {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.sort-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.sort-container label {
+    color: #667eea;
+    font-weight: 600;
+}
+
+.sort-select {
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    background: #fff;
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
 .pen-page {
     background: white;
     border-radius: 15px;

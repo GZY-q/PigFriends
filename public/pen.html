@@ -28,6 +28,18 @@
             <p id="searchResult" class="search-result"></p>
         </div>
 
+        <!-- 排序栏 -->
+        <div class="sort-bar">
+            <div class="sort-container">
+                <label for="sortSelect">排序：</label>
+                <select id="sortSelect" class="sort-select">
+                    <option value="created_at">最新发布</option>
+                    <option value="likes">点赞最多</option>
+                    <option value="comments">评论最多</option>
+                </select>
+            </div>
+        </div>
+
         <main class="pen-page">
             <div id="pigGrid" class="pig-grid">
                 <div class="loading">加载中...</div>

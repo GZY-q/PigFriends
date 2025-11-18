@@ -214,6 +214,8 @@ app.get('/api/pigs', (req, res) => {
         const limit = parseInt(req.query.limit) || 20;
         const offset = page * limit;
         const search = req.query.search ? req.query.search.trim() : '';
+        const sortParam = (req.query.sort || '').trim();
+        const sortKey = sortParam === 'likes' ? 'likes' : (sortParam === 'comments' ? 'comment_count' : 'created_at');
         
         let countStmt, stmt, total, pigs;
         
@@ -227,10 +229,11 @@ app.get('/api/pigs', (req, res) => {
             
             // 获取搜索结果列表
             stmt = db.prepare(`
-                SELECT id, name, image, location, likes, created_at 
+                SELECT id, name, image, location, likes, created_at,
+                       (SELECT COUNT(*) FROM comments WHERE comments.pig_id = pigs.id) AS comment_count
                 FROM pigs 
                 WHERE name LIKE ?
-                ORDER BY created_at DESC 
+                ORDER BY ${sortKey} DESC 
                 LIMIT ? OFFSET ?
             `);
             pigs = stmt.all(searchPattern, limit, offset);
@@ -242,9 +245,10 @@ app.get('/api/pigs', (req, res) => {
             
             // 获取列表（按创建时间倒序）
             stmt = db.prepare(`
-                SELECT id, name, image, location, likes, created_at 
+                SELECT id, name, image, location, likes, created_at,
+                       (SELECT COUNT(*) FROM comments WHERE comments.pig_id = pigs.id) AS comment_count
                 FROM pigs 
-                ORDER BY created_at DESC 
+                ORDER BY ${sortKey} DESC 
                 LIMIT ? OFFSET ?
             `);
             pigs = stmt.all(limit, offset);
