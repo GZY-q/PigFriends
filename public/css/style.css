@@ -719,6 +719,17 @@ body {
     padding: 30px;
     color: white;
     opacity: 0.8;
+    font-size: 0.9rem; /* 稍微缩小字体 */
+}
+
+.footer a {
+    color: white; /* 链接颜色与文本一致 */
+    text-decoration: none; /* 移除下划线 */
+    transition: opacity 0.3s ease; /* 添加过渡效果 */
+}
+
+.footer a:hover {
+    opacity: 0.9; /* 鼠标悬停时稍微变亮 */
 }
 
 /* 响应式设计 - 移动端 */
