@@ -1,9 +1,9 @@
 # 依赖
 node_modules/
-
+front/
+gemini-co-drawing/
 # 数据库文件
-*.db
-*.db-journal
+
 
 # 日志
 logs
@@ -29,3 +29,4 @@ Thumbs.db
 tmp/
 temp/
 
+gemini-co-drawing.zip
