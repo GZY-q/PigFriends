@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>全球围栏 - 猪朋友</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
     <div class="container">
         <header class="header-small">
@@ -70,7 +77,8 @@
                                 <div class="loading">加载中...</div>
                             </div>
                             <div class="comment-input">
-                                <textarea id="commentInput" rows="3" maxlength="200" placeholder="写下你的评论（最多200字）"></textarea>
+                                <textarea id="commentInput" rows="3" maxlength="200"
+                                    placeholder="写下你的评论（最多200字）"></textarea>
                                 <div class="comment-actions">
                                     <span id="commentCount">0/200</span>
                                     <button id="commentSubmit" class="btn btn-primary btn-small">发表</button>
@@ -83,7 +91,8 @@
         </div>
     </div>
 
+    <script src="/js/api.js"></script>
     <script src="/js/pen.js"></script>
 </body>
-</html>
 
+</html>

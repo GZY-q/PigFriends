@@ -1,16 +1,32 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>猪朋友 - 全球画猪互动平台</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
+    <!-- 动态背景 -->
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
     <div class="container">
         <header class="header">
-            <h1 class="title">🐷 猪朋友</h1>
-            <p class="subtitle">画一只属于你的猪，让它加入全球围栏！</p>
+            <div class="header-content">
+                <h1 class="title">🐷 猪朋友</h1>
+                <p class="subtitle">画一只属于你的猪，让它加入全球围栏！</p>
+            </div>
         </header>
 
         <main class="main-content">
@@ -37,10 +53,13 @@
         </main>
 
         <footer class="footer">
-            <p>© 2025 猪朋友 | 全球猪友们的快乐家园 <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">苏ICP备2025220086号</a></p>
-            
+            <p>© 2025 猪朋友 | 全球猪友们的快乐家园 <a href="https://beian.miit.gov.cn/#/Integrated/index"
+                    target="_blank">苏ICP备2025220086号</a></p>
+
         </footer>
     </div>
+    <script src="/js/api.js"></script>
+    <script src="/js/home.js"></script>
 </body>
-</html>
 
+</html>
