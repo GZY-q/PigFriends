@@ -7,16 +7,24 @@
     "start": "node server/server.js",
     "dev": "nodemon server/server.js"
   },
-  "keywords": ["pig", "draw", "interactive"],
+  "keywords": [
+    "pig",
+    "draw",
+    "interactive"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
+    "@google/genai": "^1.30.0",
     "better-sqlite3": "^11.7.0",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
     "geoip-lite": "^1.4.7"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.0.2",
+    "three": "^0.181.2",
+    "vite": "^7.2.2"
   }
 }
-

@@ -1,9 +1,9 @@
 # 依赖
 node_modules/
-front/
+pigfriends/
 gemini-co-drawing/
 # 数据库文件
-
+pigs.db
 
 # 日志
 logs
@@ -30,3 +30,6 @@ tmp/
 temp/
 
 gemini-co-drawing.zip
+pigs.db
+pigs.db
+pigs.db

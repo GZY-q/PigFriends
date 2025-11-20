@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>画一只猪 - 猪朋友</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
     <div class="container">
         <header class="header-small">
@@ -45,8 +52,25 @@
                 </div>
 
                 <div class="tool-section">
+                    <label>操作</label>
                     <button id="eraserBtn" class="tool-btn">🧹 橡皮擦</button>
+                    <button id="undoBtn" class="tool-btn" title="撤销 (Ctrl+Z)">↩️ 撤销</button>
+                    <button id="redoBtn" class="tool-btn" title="重做 (Ctrl+Y)">↪️ 重做</button>
                     <button id="clearBtn" class="tool-btn clear-btn">🗑️ 清空画布</button>
+                </div>
+            </div>
+
+            <!-- AI 魔法区域 -->
+            <div class="ai-section toolbar" style="margin-top: 20px;">
+                <div class="tool-section" style="width: 100%; display: block;">
+                    <label>✨ AI 魔法助手</label>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <input type="text" id="aiPrompt" placeholder="描述你想让 AI 帮你画什么..."
+                            style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 20px;">
+                        <button id="aiBtn" class="tool-btn"
+                            style="background: linear-gradient(135deg, #6366f1, #a855f7); color: white;">🪄 施法</button>
+                    </div>
+                    <p style="font-size: 12px; color: #666; margin-top: 5px;">提示：AI 会基于你当前的画作进行创作哦！</p>
                 </div>
             </div>
 
@@ -84,7 +108,8 @@
         </div>
     </div>
 
+    <script src="/js/api.js"></script>
     <script src="/js/draw.js"></script>
 </body>
-</html>
 
+</html>
