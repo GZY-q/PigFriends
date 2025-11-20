@@ -15,7 +15,7 @@ app.use(express.static('public'));
 
 // 注册路由
 app.use('/api/pigs', pigsRouter);
-app.use('/api/comments', commentsRouter);
+app.use('/api/pigs/:id/comments', commentsRouter);
 app.use('/api/ai', aiRouter);
 
 // 统计信息路由 (单独处理或放在 pigRoutes 中，这里放在 server.js 或者 pigRoutes 都可以，为了整洁放在 pigRoutes 更合适，但需要调整路径)

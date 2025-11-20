@@ -72,5 +72,7 @@ const API = {
     }
 };
 
+window.API = API;
+
 // 导出 API 对象 (如果是模块化环境)
 // window.API = API; // 挂载到全局，方便非模块化使用
