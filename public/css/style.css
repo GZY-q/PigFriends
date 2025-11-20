@@ -989,10 +989,13 @@ body {
         flex-direction: column;
         gap: 15px;
         padding: 15px;
+        align-items: flex-start;
     }
 
     .header-small h2 {
         font-size: 1.6rem;
+        text-align: center;
+        align-self: center;
     }
 
     .back-btn {
