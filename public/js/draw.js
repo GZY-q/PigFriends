@@ -323,7 +323,7 @@ if (aiBtn && aiPromptInput) {
 
         // 禁用按钮
         aiBtn.disabled = true;
-        aiBtn.textContent = '✨ 施法中...';
+        aiBtn.textContent = '施法中...';
         aiBtn.style.opacity = '0.7';
 
         try {
@@ -351,7 +351,7 @@ if (aiBtn && aiPromptInput) {
             alert('网络错误，请稍后重试');
         } finally {
             aiBtn.disabled = false;
-            aiBtn.textContent = '🪄 施法';
+            aiBtn.textContent = '施法';
             aiBtn.style.opacity = '1';
         }
     });

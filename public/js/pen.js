@@ -91,11 +91,11 @@ function createPigCard(pig) {
 
     const location = document.createElement('div');
     location.className = 'pig-location';
-    location.textContent = `📍 来自${pig.location}`;
+    location.textContent = `来自${pig.location}`;
 
     const time = document.createElement('div');
     time.className = 'pig-time';
-    time.textContent = `🕐 ${formatTime(pig.created_at)}`;
+    time.textContent = `${formatTime(pig.created_at)}`;
 
     const likes = document.createElement('div');
     likes.className = 'pig-likes';
@@ -378,10 +378,10 @@ function updateSearchResult(total, searchKeyword) {
 
     if (searchKeyword) {
         if (total === 0) {
-            searchResult.textContent = `没有找到包含"${searchKeyword}"的猪 😢`;
+            searchResult.textContent = `没有找到包含"${searchKeyword}"的猪`;
             searchResult.className = 'search-result';
         } else {
-            searchResult.textContent = `找到 ${total} 只包含"${searchKeyword}"的猪 🎉`;
+            searchResult.textContent = `找到 ${total} 只包含"${searchKeyword}"的猪`;
             searchResult.className = 'search-result highlight';
         }
         clearSearchBtn.style.display = 'inline-flex';
